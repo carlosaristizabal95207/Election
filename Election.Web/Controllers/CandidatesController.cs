@@ -12,29 +12,28 @@ namespace Election.Web.Controllers
 {
     public class CandidatesController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IRepository repository;
 
-        public CandidatesController(DataContext context)
+        public CandidatesController(IRepository repository)
         {
-            _context = context;
+            this.repository = repository;
         }
 
         // GET: Candidates
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Candidates.ToListAsync());
+            return View(this.repository.GetCandidates());
         }
 
         // GET: Candidates/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var candidate = await _context.Candidates
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var candidate = this.repository.GetCandidate(id.Value);
             if (candidate == null)
             {
                 return NotFound();
@@ -50,30 +49,29 @@ namespace Election.Web.Controllers
         }
 
         // POST: Candidates/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Proposal,ImageUrl,InscriptionDate")] Candidate candidate)
+        public async Task<IActionResult> Create(Candidate candidate)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(candidate);
-                await _context.SaveChangesAsync();
+                this.repository.AddCandidate(candidate);
+                await this.repository.SaveAllAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(candidate);
         }
 
         // GET: Candidates/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var candidate = await _context.Candidates.FindAsync(id);
+            var candidate = this.repository.GetCandidate(id.Value);
             if (candidate == null)
             {
                 return NotFound();
@@ -82,27 +80,21 @@ namespace Election.Web.Controllers
         }
 
         // POST: Candidates/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Proposal,ImageUrl,InscriptionDate")] Candidate candidate)
+        public async Task<IActionResult> Edit(Candidate candidate)
         {
-            if (id != candidate.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(candidate);
-                    await _context.SaveChangesAsync();
+                    this.repository.UpdateCandidate(candidate);
+                    await this.repository.SaveAllAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CandidateExists(candidate.Id))
+                    if (!this.repository.CandidateExists(candidate.Id))
                     {
                         return NotFound();
                     }
@@ -117,15 +109,14 @@ namespace Election.Web.Controllers
         }
 
         // GET: Candidates/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var candidate = await _context.Candidates
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var candidate = this.repository.GetCandidate(id.Value);
             if (candidate == null)
             {
                 return NotFound();
@@ -139,15 +130,11 @@ namespace Election.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var candidate = await _context.Candidates.FindAsync(id);
-            _context.Candidates.Remove(candidate);
-            await _context.SaveChangesAsync();
+            var candidate = this.repository.GetCandidate(id);
+            this.repository.RemoveCandeidate(candidate);
+            await this.repository.SaveAllAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CandidateExists(int id)
-        {
-            return _context.Candidates.Any(e => e.Id == id);
-        }
     }
 }

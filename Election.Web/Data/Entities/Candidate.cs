@@ -16,6 +16,7 @@ namespace Election.Web.Data.Entities
         public string Name { get; set; }
 
         [Required]
+        [MaxLength(200, ErrorMessage = "Sorry, the field {0} only can contain {1} characters lenght")]
         public string Proposal { get; set; }
 
         [Display(Name = "Image")]
