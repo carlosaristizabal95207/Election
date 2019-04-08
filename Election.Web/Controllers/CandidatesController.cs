@@ -1,39 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Election.Web.Data;
-using Election.Web.Data.Entities;
+﻿
 
 namespace Election.Web.Controllers
 {
+    using System.Threading.Tasks;
+    using Data;
+    using Data.Entities;
+    using Helpers;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     public class CandidatesController : Controller
     {
-        private readonly IRepository repository;
+        private readonly ICandidateRepository candidateRepository;
+        private readonly IUserHelper userHelper;
 
-        public CandidatesController(IRepository repository)
+        public CandidatesController(ICandidateRepository candidateRepository, IUserHelper userHelper)
         {
-            this.repository = repository;
+            this.candidateRepository = candidateRepository;
+            this.userHelper = userHelper;
         }
 
-        // GET: Candidates
+        // GET: Candidate
         public IActionResult Index()
         {
-            return View(this.repository.GetCandidates());
+            return View(this.candidateRepository.GetAll());
         }
 
-        // GET: Candidates/Details/5
-        public IActionResult Details(int? id)
+        // GET: Candidate/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var candidate = this.repository.GetCandidate(id.Value);
+            var candidate = await this.candidateRepository.GetByIdAsync(id.Value);
             if (candidate == null)
             {
                 return NotFound();
@@ -42,59 +43,61 @@ namespace Election.Web.Controllers
             return View(candidate);
         }
 
-        // GET: Candidates/Create
+        // GET: Candidate/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Candidates/Create
+        // POST: Candidate/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Candidate candidate)
         {
             if (ModelState.IsValid)
             {
-                this.repository.AddCandidate(candidate);
-                await this.repository.SaveAllAsync();
+                // TODO: Pending to change to: this.User.Identity.Name
+                candidate.User = await this.userHelper.GetUserByEmailAsync("carlosaaristi@gmail.com");
+                await this.candidateRepository.CreateAsync(candidate);
                 return RedirectToAction(nameof(Index));
             }
 
             return View(candidate);
         }
 
-        // GET: Candidates/Edit/5
-        public IActionResult Edit(int? id)
+        // GET: Candidate/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var candidate = this.repository.GetCandidate(id.Value);
+            var candidate = await this.candidateRepository.GetByIdAsync(id.Value);
             if (candidate == null)
             {
                 return NotFound();
             }
+
             return View(candidate);
         }
 
-        // POST: Candidates/Edit/5
+        // POST: Candidate/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Candidate candidate)
         {
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    this.repository.UpdateCandidate(candidate);
-                    await this.repository.SaveAllAsync();
+                    // TODO: Pending to change to: this.User.Identity.Name
+                    candidate.User = await this.userHelper.GetUserByEmailAsync("jzuluaga55@gmail.com");
+                    await this.candidateRepository.UpdateAsync(candidate);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!this.repository.CandidateExists(candidate.Id))
+                    if (!await this.candidateRepository.ExistAsync(candidate.Id))
                     {
                         return NotFound();
                     }
@@ -105,18 +108,19 @@ namespace Election.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View(candidate);
         }
 
-        // GET: Candidates/Delete/5
-        public IActionResult Delete(int? id)
+        // GET: Candidate/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var candidate = this.repository.GetCandidate(id.Value);
+            var candidate = await this.candidateRepository.GetByIdAsync(id.Value);
             if (candidate == null)
             {
                 return NotFound();
@@ -125,16 +129,15 @@ namespace Election.Web.Controllers
             return View(candidate);
         }
 
-        // POST: Candidates/Delete/5
+        // POST: Candidate/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var candidate = this.repository.GetCandidate(id);
-            this.repository.RemoveCandeidate(candidate);
-            await this.repository.SaveAllAsync();
+            var candidate = await this.candidateRepository.GetByIdAsync(id);
+            await this.candidateRepository.DeleteAsync(candidate);
             return RedirectToAction(nameof(Index));
         }
-
     }
+
 }

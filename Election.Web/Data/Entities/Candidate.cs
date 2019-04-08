@@ -5,7 +5,7 @@ namespace Election.Web.Data.Entities
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class Candidate
+    public class Candidate : IEntity
     {
 
         public int Id { get; set; }
@@ -24,6 +24,8 @@ namespace Election.Web.Data.Entities
 
         [Display(Name = "Inscription Date")]
         public DateTime? InscriptionDate { get; set; }
+
+        public User User { get; set; }
 
 
 

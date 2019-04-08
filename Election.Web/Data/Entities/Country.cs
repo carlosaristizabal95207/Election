@@ -5,7 +5,7 @@ namespace Election.Web.Data.Entities
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Country
+    public class Country : IEntity
     {
         public int Id { get; set; }
 
@@ -15,8 +15,5 @@ namespace Election.Web.Data.Entities
         public string Name { get; set; }
 
         public ICollection<City> Cities { get; set; }
-
-        [Display(Name = "# Cities")]
-        public int NumberCities { get { return this.Cities == null ? 0 : this.Cities.Count; } }
     }
 }

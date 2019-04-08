@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿
 namespace Election.Web.Data.Entities
 {
-    public class Event
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    public class Event : IEntity
     {
 
         public int Id { get; set; }
@@ -22,7 +20,7 @@ namespace Election.Web.Data.Entities
 
         public int Votes { get; set; }
 
-        [Display(Name= "Start Event")]
+        [Display(Name = "Start Event")]
         public DateTime StartEvent { get; set; }
 
         [Display(Name = "End Event")]
