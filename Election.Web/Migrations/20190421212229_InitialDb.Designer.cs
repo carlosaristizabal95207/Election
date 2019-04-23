@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Election.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190408005222_AddCountriesAndEventsModel")]
-    partial class AddCountriesAndEventsModel
+    [Migration("20190421212229_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,8 @@ namespace Election.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("EventId");
+
                     b.Property<string>("ImageUrl");
 
                     b.Property<DateTime?>("InscriptionDate");
@@ -36,12 +38,13 @@ namespace Election.Web.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("Proposal")
-                        .IsRequired()
                         .HasMaxLength(200);
 
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.HasIndex("UserId");
 
@@ -64,7 +67,7 @@ namespace Election.Web.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("City");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Election.Web.Data.Entities.Country", b =>
@@ -88,8 +91,6 @@ namespace Election.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Candidates");
-
                     b.Property<string>("Description")
                         .HasMaxLength(200);
 
@@ -99,11 +100,15 @@ namespace Election.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<int>("NumberVotes");
+
                     b.Property<DateTime>("StartEvent");
 
-                    b.Property<int>("Votes");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Events");
                 });
@@ -115,7 +120,12 @@ namespace Election.Web.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("Address")
+                        .HasMaxLength(100);
+
                     b.Property<DateTime?>("Birthdate");
+
+                    b.Property<int>("CityId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -165,6 +175,8 @@ namespace Election.Web.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -289,6 +301,10 @@ namespace Election.Web.Migrations
 
             modelBuilder.Entity("Election.Web.Data.Entities.Candidate", b =>
                 {
+                    b.HasOne("Election.Web.Data.Entities.Event")
+                        .WithMany("Candidates")
+                        .HasForeignKey("EventId");
+
                     b.HasOne("Election.Web.Data.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -299,6 +315,21 @@ namespace Election.Web.Migrations
                     b.HasOne("Election.Web.Data.Entities.Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId");
+                });
+
+            modelBuilder.Entity("Election.Web.Data.Entities.Event", b =>
+                {
+                    b.HasOne("Election.Web.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Election.Web.Data.Entities.User", b =>
+                {
+                    b.HasOne("Election.Web.Data.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

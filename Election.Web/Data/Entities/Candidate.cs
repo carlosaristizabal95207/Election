@@ -15,7 +15,7 @@ namespace Election.Web.Data.Entities
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Required]
+        //[Required]
         [MaxLength(200, ErrorMessage = "Sorry, the field {0} only can contain {1} characters lenght")]
         public string Proposal { get; set; }
 
@@ -26,6 +26,19 @@ namespace Election.Web.Data.Entities
         public DateTime? InscriptionDate { get; set; }
 
         public User User { get; set; }
+
+        public string ImageFullPath {
+            get
+            {
+                if (string.IsNullOrEmpty(this.ImageUrl))
+                {
+                    return null;
+                }
+
+                return $"https://caristizprojects.azurewebsites.net{this.ImageUrl.Substring(1)}";
+
+            }
+        }
 
 
 

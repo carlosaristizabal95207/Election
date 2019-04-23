@@ -2,12 +2,15 @@
 
 namespace Election.Web.Controllers
 {
-    using System.Threading.Tasks;
     using Data;
     using Data.Entities;
+    using Election.Web.Models;
     using Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class CandidatesController : Controller
     {
@@ -23,7 +26,7 @@ namespace Election.Web.Controllers
         // GET: Candidate
         public IActionResult Index()
         {
-            return View(this.candidateRepository.GetAll());
+            return View(this.candidateRepository.GetAll().OrderBy(c => c.Name));
         }
 
         // GET: Candidate/Details/5
@@ -52,17 +55,51 @@ namespace Election.Web.Controllers
         // POST: Candidate/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Candidate candidate)
+        public async Task<IActionResult> Create(CandidateViewModel view)
         {
             if (ModelState.IsValid)
             {
+
+                var path = string.Empty;
+
+                if (view.ImageFile != null && view.ImageFile.Length > 0)
+                {
+                    path = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot\\images\\Candidates",
+                        view.ImageFile.FileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await view.ImageFile.CopyToAsync(stream);
+                    }
+
+                    path = $"~/images/Candidates/{view.ImageFile.FileName}";
+                }
+
+                var candidate = this.ToCandidate(view, path);
                 // TODO: Pending to change to: this.User.Identity.Name
                 candidate.User = await this.userHelper.GetUserByEmailAsync("carlosaaristi@gmail.com");
                 await this.candidateRepository.CreateAsync(candidate);
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(candidate);
+            return View(view);
+        }
+
+        private Candidate ToCandidate(CandidateViewModel view, string path)
+        {
+            return new Candidate
+            {
+                Id = view.EventId,
+                ImageUrl = path,
+                Name = view.Name,
+                Proposal = view.Proposal,
+                InscriptionDate = view.InscriptionDate,
+                User = view.User
+
+
+            };
         }
 
         // GET: Candidate/Edit/5
@@ -79,25 +116,59 @@ namespace Election.Web.Controllers
                 return NotFound();
             }
 
-            return View(candidate);
+            var view = this.ToCandidateViewModel(candidate);
+            return View(view);
+
+        }
+
+        private CandidateViewModel ToCandidateViewModel(Candidate candidate)
+        {
+            return new CandidateViewModel
+            {
+                EventId = candidate.Id,
+                Name = candidate.Name,
+                Proposal = candidate.Proposal,
+                InscriptionDate = candidate.InscriptionDate,
+                User = candidate.User
+            };
         }
 
         // POST: Candidate/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Candidate candidate)
+        public async Task<IActionResult> Edit(CandidateViewModel view)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+
+                    var path = view.ImageUrl;
+
+                    if (view.ImageFile != null && view.ImageFile.Length > 0)
+                    {
+                        path = Path.Combine(
+                            Directory.GetCurrentDirectory(),
+                            "wwwroot\\images\\Candidates",
+                            view.ImageFile.FileName);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await view.ImageFile.CopyToAsync(stream);
+                        }
+
+                        path = $"~/images/Candidates/{view.ImageFile.FileName}";
+                    }
+
+                    var candidate = this.ToCandidate(view, path);
+
                     // TODO: Pending to change to: this.User.Identity.Name
                     candidate.User = await this.userHelper.GetUserByEmailAsync("jzuluaga55@gmail.com");
                     await this.candidateRepository.UpdateAsync(candidate);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await this.candidateRepository.ExistAsync(candidate.Id))
+                    if (!await this.candidateRepository.ExistAsync(view.EventId))
                     {
                         return NotFound();
                     }
@@ -109,7 +180,7 @@ namespace Election.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(candidate);
+            return View(view);
         }
 
         // GET: Candidate/Delete/5

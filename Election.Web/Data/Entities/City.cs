@@ -4,7 +4,7 @@ namespace Election.Web.Data.Entities
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class City 
+    public class City : IEntity
     {
 
         public int Id { get; set; }

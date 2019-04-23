@@ -37,6 +37,7 @@ namespace Election.Web
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequiredLength = 6;
             })
+             .AddDefaultTokenProviders()
              .AddEntityFrameworkStores<DataContext>();
 
 
@@ -47,8 +48,8 @@ namespace Election.Web
 
             services.AddTransient<SeedDb>();
 
-            services.AddScoped<ICandidateRepository, CandidateRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<ICandidateRepository, CandidateRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
 
             services.AddScoped<IUserHelper, UserHelper>();
@@ -61,6 +62,11 @@ namespace Election.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -78,6 +84,7 @@ namespace Election.Web
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
