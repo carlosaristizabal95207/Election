@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Election.UIForms.ViewModels;
+using Election.UIForms.Views;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +12,8 @@ namespace Election.UIForms
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainViewModel.GetInsance().Login = new LoginViewModel();
+            this.MainPage = new NavigationPage( new LoginPage());
         }
 
         protected override void OnStart()

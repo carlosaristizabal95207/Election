@@ -90,16 +90,21 @@ namespace Election.Web.Controllers
 
                     if (view.ImageFile != null && view.ImageFile.Length > 0)
                     {
+
+                        var guid = Guid.NewGuid().ToString();
+                        var file = $"{guid}.jpg";
+
+
                         path = Path.Combine(Directory.GetCurrentDirectory(),
                                             "wwwroot\\images\\Candidates",
-                                            view.ImageFile.FileName);
+                                            file);
 
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
                             await view.ImageFile.CopyToAsync(stream);
                         }
 
-                        path = $"~/images/Candidates/{view.ImageFile.FileName}";
+                        path = $"~/images/Candidates/{file}";
                     }
 
                     var candidate = this.ToCandidate(view, path);
@@ -153,16 +158,20 @@ namespace Election.Web.Controllers
 
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    path = Path.Combine(Directory.GetCurrentDirectory(), 
-                                        "wwwroot\\images\\Candidates", 
-                                        model.ImageFile.FileName);
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+
+
+                    path = Path.Combine(Directory.GetCurrentDirectory(),
+                                        "wwwroot\\images\\Candidates",
+                                        file);
 
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await model.ImageFile.CopyToAsync(stream);
                     }
 
-                    path = $"~/images/Candidates/{model.ImageFile.FileName}";
+                    path = $"~/images/Candidates/{file}";
                 }
 
                 var candidate = this.ToCandidate(model, path);

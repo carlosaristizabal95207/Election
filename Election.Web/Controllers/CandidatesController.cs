@@ -8,6 +8,7 @@ namespace Election.Web.Controllers
     using Helpers;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using System;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -64,17 +65,21 @@ namespace Election.Web.Controllers
 
                 if (view.ImageFile != null && view.ImageFile.Length > 0)
                 {
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+
+
                     path = Path.Combine(
                         Directory.GetCurrentDirectory(),
                         "wwwroot\\images\\Candidates",
-                        view.ImageFile.FileName);
+                        file);
 
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await view.ImageFile.CopyToAsync(stream);
                     }
 
-                    path = $"~/images/Candidates/{view.ImageFile.FileName}";
+                    path = $"~/images/Candidates/{file}";
                 }
 
                 var candidate = this.ToCandidate(view, path);
@@ -147,17 +152,21 @@ namespace Election.Web.Controllers
 
                     if (view.ImageFile != null && view.ImageFile.Length > 0)
                     {
+                        var guid = Guid.NewGuid().ToString();
+                        var file = $"{guid}.jpg";
+
+
                         path = Path.Combine(
                             Directory.GetCurrentDirectory(),
                             "wwwroot\\images\\Candidates",
-                            view.ImageFile.FileName);
+                            file);
 
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
                             await view.ImageFile.CopyToAsync(stream);
                         }
 
-                        path = $"~/images/Candidates/{view.ImageFile.FileName}";
+                        path = $"~/images/Candidates/{file}";
                     }
 
                     var candidate = this.ToCandidate(view, path);
