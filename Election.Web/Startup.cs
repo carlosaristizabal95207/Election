@@ -53,6 +53,7 @@ namespace Election.Web
             services.AddScoped<ICountryRepository, CountryRepository>();
 
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IMailHelper, MailHelper>();
 
 
             services.Configure<CookiePolicyOptions>(options =>

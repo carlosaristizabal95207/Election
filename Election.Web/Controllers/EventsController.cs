@@ -14,7 +14,7 @@ namespace Election.Web.Controllers
     using System.Threading.Tasks;
 
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class EventsController : Controller
     {
         private readonly IEventRepository eventRepository;

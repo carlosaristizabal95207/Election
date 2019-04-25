@@ -5,7 +5,7 @@ namespace Election.Web.Helpers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Data.Entities;
-    using Election.Web.Models;
+    using Models;
     using Microsoft.AspNetCore.Identity;
 
     public interface IUserHelper
