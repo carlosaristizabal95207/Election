@@ -97,7 +97,7 @@ namespace Election.Web.Migrations
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
                     Occupation = table.Column<string>(maxLength: 30, nullable: true),
                     Stratum = table.Column<int>(nullable: false),
-                    Gender = table.Column<string>(nullable: false),
+                    Gender = table.Column<string>(nullable: true),
                     Birthdate = table.Column<DateTime>(nullable: true),
                     Address = table.Column<string>(maxLength: 100, nullable: true),
                     CityId = table.Column<int>(nullable: false),
@@ -112,7 +112,7 @@ namespace Election.Web.Migrations
                         column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

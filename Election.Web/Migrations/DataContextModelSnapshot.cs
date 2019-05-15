@@ -137,8 +137,7 @@ namespace Election.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("Gender")
-                        .IsRequired();
+                    b.Property<string>("Gender");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -327,7 +326,7 @@ namespace Election.Web.Migrations
                     b.HasOne("Election.Web.Data.Entities.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

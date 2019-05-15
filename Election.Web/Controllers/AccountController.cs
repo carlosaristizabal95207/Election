@@ -101,6 +101,7 @@ namespace Election.Web.Controllers
                         LastName = model.LastName,
                         Email = model.Username,
                         UserName = model.Username,
+                        Gender = model.Gender,
                         Address = model.Address,
                         PhoneNumber = model.PhoneNumber,
                         CityId = model.CityId,
@@ -121,9 +122,9 @@ namespace Election.Web.Controllers
                         token = myToken
                     }, protocol: HttpContext.Request.Scheme);
 
-                    this.mailHelper.SendMail(model.Username, "Shop Email confirmation", $"<h1>Shop Email Confirmation</h1>" +
+                    /*this.mailHelper.SendMail(model.Username, "Shop Email confirmation", $"<h1>Shop Email Confirmation</h1>" +
                         $"To allow the user, " +
-                        $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+                        $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");*/
                     this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
                     return this.View(model);
                 }

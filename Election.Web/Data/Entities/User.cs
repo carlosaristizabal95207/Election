@@ -26,7 +26,6 @@ namespace Election.Web.Data.Entities
         [Required]
         public int Stratum { get; set; }
 
-        [Required]
         public string Gender { get; set; }
 
         public DateTime? Birthdate { get; set; }
