@@ -34,13 +34,13 @@ namespace Election.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             var candidate = await this.eventRepository.GetCandidateAsync(id.Value);
             if (candidate == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             var eventId = await this.eventRepository.DeleteCandidateAsync(candidate);
@@ -117,7 +117,7 @@ namespace Election.Web.Controllers
                 {
                     if (!await this.candidateRepository.ExistAsync(view.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("EventNotFound");
                     }
                     else
                     {
@@ -135,13 +135,13 @@ namespace Election.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             var eventVote = await this.eventRepository.GetByIdAsync(id.Value);
             if (eventVote == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             var model = new CandidateViewModel { EventId = eventVote.Id };
@@ -210,13 +210,13 @@ namespace Election.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             var eventVote = await this.eventRepository.GetEventWithCandidatesAsync(id.Value);
             if (eventVote == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             return View(eventVote);
@@ -263,13 +263,13 @@ namespace Election.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             var eventVote = await this.eventRepository.GetByIdAsync(id.Value);
             if (eventVote == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
             return View(eventVote);
         }
@@ -293,13 +293,13 @@ namespace Election.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             var eventVote = await this.eventRepository.GetByIdAsync(id.Value);
             if (eventVote == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EventNotFound");
             }
 
             try
@@ -311,6 +311,10 @@ namespace Election.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult EventNotFound()
+        {
+            return this.View();
+        }
 
     }
 }

@@ -14,6 +14,9 @@ namespace Election.Web
     using Data;
     using Data.Entities;
     using Helpers;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -40,6 +43,18 @@ namespace Election.Web
              .AddDefaultTokenProviders()
              .AddEntityFrameworkStores<DataContext>();
 
+            services.AddAuthentication()
+                .AddCookie()
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = this.Configuration["Tokens:Issuer"],
+                        ValidAudience = this.Configuration["Tokens:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
+                    };
+                });
 
             services.AddDbContext<DataContext>(cfg =>
             {

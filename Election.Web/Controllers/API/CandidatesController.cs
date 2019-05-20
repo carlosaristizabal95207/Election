@@ -2,9 +2,12 @@
 
 namespace Election.Web.Controllers.API
 {
-    using Election.Web.Data;
+    using Data;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[Controller]")]
     public class CandidatesController : Controller
     {

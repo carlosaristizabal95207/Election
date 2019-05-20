@@ -6,6 +6,7 @@ namespace Election.Web.Controllers
     using Data.Entities;
     using Election.Web.Models;
     using Helpers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using System;
@@ -13,6 +14,7 @@ namespace Election.Web.Controllers
     using System.Linq;
     using System.Threading.Tasks;
 
+    [Authorize(Roles = "Admin")]
     public class CandidatesController : Controller
     {
         private readonly ICandidateRepository candidateRepository;
@@ -35,13 +37,13 @@ namespace Election.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CandidateNotFound");
             }
 
             var candidate = await this.candidateRepository.GetByIdAsync(id.Value);
             if (candidate == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CandidateNotFound");
             }
 
             return View(candidate);
@@ -111,13 +113,13 @@ namespace Election.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CandidateNotFound");
             }
 
             var candidate = await this.candidateRepository.GetByIdAsync(id.Value);
             if (candidate == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CandidateNotFound");
             }
 
             var view = this.ToCandidateViewModel(candidate);
@@ -176,7 +178,7 @@ namespace Election.Web.Controllers
                 {
                     if (!await this.candidateRepository.ExistAsync(view.EventId))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("CandidateNotFound");
                     }
                     else
                     {
@@ -194,13 +196,13 @@ namespace Election.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CandidateNotFound");
             }
 
             var candidate = await this.candidateRepository.GetByIdAsync(id.Value);
             if (candidate == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CandidateNotFound");
             }
 
             return View(candidate);
@@ -214,6 +216,11 @@ namespace Election.Web.Controllers
             var candidate = await this.candidateRepository.GetByIdAsync(id);
             await this.candidateRepository.DeleteAsync(candidate);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult CandidateNotFound()
+        {
+            return this.View();
         }
     }
 
