@@ -122,9 +122,9 @@ namespace Election.Web.Controllers
                         token = myToken
                     }, protocol: HttpContext.Request.Scheme);
 
-                    /*this.mailHelper.SendMail(model.Username, "Shop Email confirmation", $"<h1>Shop Email Confirmation</h1>" +
+                    this.mailHelper.SendMail(model.Username, "Election Email confirmation", $"<h1>Election Email Confirmation</h1>" +
                         $"To allow the user, " +
-                        $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");*/
+                        $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
                     this.ViewBag.Message = "The instructions to allow your user has been sent to email.";
                     return this.View(model);
                 }
@@ -146,6 +146,7 @@ namespace Election.Web.Controllers
                 model.LastName = user.LastName;
                 model.Address = user.Address;
                 model.PhoneNumber = user.PhoneNumber;
+                model.Gender = user.Gender;
 
                 var city = await this.countryRepository.GetCityAsync(user.CityId);
                 if (city != null)
@@ -180,6 +181,7 @@ namespace Election.Web.Controllers
                     user.LastName = model.LastName;
                     user.Address = model.Address;
                     user.PhoneNumber = model.PhoneNumber;
+                    user.Gender = model.Gender;
                     user.CityId = model.CityId;
                     user.City = city;
 
@@ -329,7 +331,7 @@ namespace Election.Web.Controllers
                 var myToken = await this.userHelper.GeneratePasswordResetTokenAsync(user);
                 var link = this.Url.Action("ResetPassword", "Account", new { token = myToken }, protocol: HttpContext.Request.Scheme);
                 var mailSender = new MailHelper(configuration);
-                mailSender.SendMail(model.Email, "Shop Password Reset", $"<h1>Shop Recover Password</h1>" +
+                mailSender.SendMail(model.Email, "Election Password Reset", $"<h1>Election Recover Password</h1>" +
                     $"To reset the password click in this link:</br></br>" +
                     $"<a href = \"{link}\">Reset Password</a>");
                 this.ViewBag.Message = "The instructions to recover your password has been sent to email.";
