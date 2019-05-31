@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿
 
 namespace Election.Common.Models
 {
+    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+
     public class Event
     {
         [JsonProperty("id")]
