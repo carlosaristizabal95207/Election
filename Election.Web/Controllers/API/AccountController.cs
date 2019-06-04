@@ -12,7 +12,6 @@ namespace Election.Web.Controllers.API
     using System.Linq;
     using System.Threading.Tasks;
     using Data;
-    using Election.Common.Models;
 
     [Route("api/[Controller]")]
     public class AccountController : Controller

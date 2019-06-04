@@ -254,4 +254,8 @@
     <None Include="wwwroot\node_modules\font-awesome\scss\_variables.scss" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Election.Common\Election.Common.csproj" />
+  </ItemGroup>
+
 </Project>

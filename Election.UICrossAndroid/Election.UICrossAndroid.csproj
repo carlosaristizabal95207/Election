@@ -69,6 +69,7 @@
     <Compile Include="Services\NetworkProvider.cs" />
     <Compile Include="Services\PictureService.cs" />
     <Compile Include="Setup.cs" />
+    <Compile Include="Views\EventView.cs" />
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\SplashView.cs" />
   </ItemGroup>
@@ -113,10 +114,16 @@
     <PackageReference Include="MvvmCross.Plugin.Visibility">
       <Version>6.2.3</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.Constraint.Layout">
+      <Version>1.1.2</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.1" />
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.1" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.0.1" />
+    <PackageReference Include="Xamarin.FFImageLoading">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Election.Common\Election.Common.csproj">
@@ -142,6 +149,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\SplashStyle.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Toolbar.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\menu_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

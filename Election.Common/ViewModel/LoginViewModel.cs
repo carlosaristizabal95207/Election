@@ -59,14 +59,14 @@ namespace Election.Common.ViewModel
             set => this.SetProperty(ref this.password, value);
         }
 
-        /*public ICommand LoginCommand
+        public ICommand LoginCommand
         {
             get
             {
                 this.loginCommand = this.loginCommand ?? new MvxCommand(this.DoLoginCommand);
                 return this.loginCommand;
             }
-        }*/
+        }
 
         public ICommand RegisterCommand
         {
@@ -82,7 +82,7 @@ namespace Election.Common.ViewModel
             await this.navigationService.Navigate<RegisterViewModel>();
         }
 
-        /*private async void DoLoginCommand()
+        private async void DoLoginCommand()
         {
             if (string.IsNullOrEmpty(this.Email))
             {
@@ -96,11 +96,11 @@ namespace Election.Common.ViewModel
                 return;
             }
 
-            if (!this.networkProvider.IsConnectedToWifi())
+            /*if (!this.networkProvider.IsConnectedToWifi())
             {
                 this.dialogService.Alert("Error", "The App requiered a internet connection, please check and try again.", "Accept");
                 return;
-            }
+            }*/
 
             this.IsLoading = true;
 
@@ -141,6 +141,6 @@ namespace Election.Common.ViewModel
 
             this.IsLoading = false;
             await this.navigationService.Navigate<EventsViewModel>();
-        }*/
+        }
     }
 }
