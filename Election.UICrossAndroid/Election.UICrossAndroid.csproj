@@ -69,6 +69,7 @@
     <Compile Include="Services\NetworkProvider.cs" />
     <Compile Include="Services\PictureService.cs" />
     <Compile Include="Setup.cs" />
+    <Compile Include="Views\EventsView.cs" />
     <Compile Include="Views\EventView.cs" />
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\SplashView.cs" />
@@ -79,6 +80,10 @@
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\layout\EventRow.axml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
     <AndroidResource Include="Resources\values\strings.xml" />
@@ -163,6 +168,19 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\menu_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\EventPage.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\noImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\AddEventPage.axml">
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

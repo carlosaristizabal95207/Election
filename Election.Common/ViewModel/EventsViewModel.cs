@@ -18,6 +18,7 @@
         private readonly IApiService apiService;
         private readonly IDialogService dialogService;
         private readonly IMvxNavigationService navigationService;
+        private MvxCommand addEventCommand;
         private MvxCommand<Event> itemClickCommand;
 
         public EventsViewModel(
@@ -38,6 +39,22 @@
                 return itemClickCommand;
             }
         }
+
+        public ICommand AddEventCommand
+        {
+            get
+            {
+                this.addEventCommand = this.addEventCommand ?? new MvxCommand(this.AddEvent);
+                return this.addEventCommand;
+            }
+        }
+
+        private async void AddEvent()
+        {
+            await this.navigationService.Navigate<AddEventViewModel>();
+        }
+
+
 
         public List<Event> Events
         {
@@ -62,7 +79,7 @@
         {
             var token = JsonConvert.DeserializeObject<TokenResponse>(Settings.Token);
             var response = await this.apiService.GetListAsync<Event>(
-                "https://shopzulu.azurewebsites.net",
+                "https://caristizprojects.azurewebsites.net",
                 "/api",
                 "/Events",
                 "bearer",

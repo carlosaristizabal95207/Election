@@ -36,7 +36,7 @@ namespace Election.Common.ViewModel
             this.navigationService = navigationService;
             this.networkProvider = networkProvider;
 
-            this.Email = "jzuluaga55@gmail.com";
+            this.Email = "carlosaaristi@gmail.com";
             this.Password = "123456";
             this.IsLoading = false;
         }
@@ -111,7 +111,7 @@ namespace Election.Common.ViewModel
             };
 
             var response = await this.apiService.GetTokenAsync(
-                "https://shopzulu.azurewebsites.net",
+                "https://caristizprojects.azurewebsites.net",
                 "/Account",
                 "/CreateToken",
                 request);
@@ -126,7 +126,7 @@ namespace Election.Common.ViewModel
             var token = (TokenResponse)response.Result;
 
             var response2 = await this.apiService.GetUserByEmailAsync(
-                "https://shopzulu.azurewebsites.net",
+                "https://caristizprojects.azurewebsites.net",
                 "/api",
                 "/Account/GetUserByEmail",
                 this.Email,
