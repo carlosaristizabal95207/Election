@@ -84,7 +84,7 @@ namespace Election.Common.ViewModel
             var token = JsonConvert.DeserializeObject<TokenResponse>(Settings.Token);
 
             var response = await this.apiService.DeleteAsync(
-                "https://shopzulu.azurewebsites.net",
+                "https://caristizprojects.azurewebsites.net",
                 "/api",
                 "/Events",
                 eventE.Id,
@@ -116,7 +116,7 @@ namespace Election.Common.ViewModel
             var token = JsonConvert.DeserializeObject<TokenResponse>(Settings.Token);
 
             var response = await this.apiService.PutAsync(
-                "https://shopzulu.azurewebsites.net",
+                "https://caristizprojects.azurewebsites.net",
                 "/api",
                 "/Event",
                 eventE.Id,

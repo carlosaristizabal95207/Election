@@ -66,12 +66,9 @@ namespace Election.Web.Controllers.API
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Stratum = request.Stratum,
-                Birthdate = request.Birthdate,
                 Email = request.Email,
                 UserName = request.Email,
-                Occupation = request.Occupation,
-                Gender = request.Gender,
+                Address = request.Address,
                 PhoneNumber = request.Phone,
                 CityId = request.CityId,
                 City = city

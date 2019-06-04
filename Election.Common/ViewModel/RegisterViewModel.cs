@@ -136,7 +136,7 @@
             this.IsLoading = true;
 
             var response = await this.apiService.GetListAsync<Country>(
-                "https://shopzulu.azurewebsites.net",
+                "https://caristizprojects.azurewebsites.net",
                 "/api",
                 "/Countries");
 
@@ -227,7 +227,7 @@
             };
 
             var response = await this.apiService.RegisterUserAsync(
-                "https://shopzulu.azurewebsites.net",
+                "https://caristizprojects.azurewebsites.net",
                 "/api",
                 "/Account",
                 request);
