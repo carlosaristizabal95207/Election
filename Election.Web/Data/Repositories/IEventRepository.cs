@@ -24,5 +24,7 @@ namespace Election.Web.Data
 
         IQueryable GetAllWithUsers();
 
+        IQueryable GetEventsWithCandidates();
+
     }
 }

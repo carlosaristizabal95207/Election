@@ -84,5 +84,12 @@
             return eventVote.Id;
         }
 
+        public IQueryable GetEventsWithCandidates()
+        {
+            return this.context.Events
+                .Include(c => c.Candidates)
+                .OrderBy(c => c.Description);
+        }
+
     }
 }

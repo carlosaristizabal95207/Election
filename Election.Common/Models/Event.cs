@@ -24,7 +24,7 @@ namespace Election.Common.Models
         public DateTime EndEvent { get; set; }
 
         [JsonProperty("candidates")]
-        public ICollection<Candidate> Candidates { get; set; }
+        public List<Candidate> Candidates { get; set; }
 
         [JsonProperty("candidatesnumber")]
         public int CandidatesNumber { get { return this.Candidates == null ? 0 : this.Candidates.Count; } }

@@ -29,6 +29,7 @@
             this.apiService = apiService;
             this.dialogService = dialogService;
             this.navigationService = navigationService;
+            this.LoadEvents();
         }
 
         public ICommand ItemClickCommand
@@ -40,19 +41,19 @@
             }
         }
 
-        public ICommand AddEventCommand
+        /*public ICommand AddEventCommand
         {
             get
             {
                 this.addEventCommand = this.addEventCommand ?? new MvxCommand(this.AddEvent);
                 return this.addEventCommand;
             }
-        }
+        }*/
 
-        private async void AddEvent()
+       /* private async void AddEvent()
         {
             await this.navigationService.Navigate<AddEventViewModel>();
-        }
+        }*/
 
 
 
@@ -62,16 +63,18 @@
             set => this.SetProperty(ref this.events, value);
         }
 
-        public override void ViewAppeared()
+        /*
+         * public override void ViewAppeared()
         {
             base.ViewAppeared();
             this.LoadEvents();
         }
+        */
 
         private async void OnItemClickCommand(Event eventE)
         {
-            await this.navigationService.Navigate<EventsDetailViewModel, NavigationArgs>(
-                new NavigationArgs { Event = eventE });
+             await this.navigationService.Navigate<CandidatesViewModel, NavigationArgs>(
+               new NavigationArgs { Event = eventE });
         }
 
 
